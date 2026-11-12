@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#101725">
+  <title>Dragon Ball: Canyon Run</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="game-shell">
+    <canvas id="game-canvas"></canvas>
+
+    <!-- ============ HUD ============ -->
+    <div id="hud" class="hud hidden">
+      <div class="hud-top">
+        <div class="hud-left">
+          <button id="pause-btn" class="square-btn" aria-label="Pause">
+            <span class="pause-bars"><i></i><i></i></span>
+          </button>
+          <div class="hud-stack">
+            <div id="hearts" class="hearts" aria-label="Health">
+              <svg viewBox="0 0 24 24" class="heart"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              <svg viewBox="0 0 24 24" class="heart"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              <svg viewBox="0 0 24 24" class="heart"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>
+            <div class="ball-row">
+              <div id="ball-pips" class="ball-pips"></div>
+              <span id="ball-count" class="ball-count">0/7</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hud-center">
+          <div class="level-label-row">
+            <span id="level-label">LV. 1</span>
+            <span class="level-name">CANYON ROAD</span>
+          </div>
+          <div class="level-bar"><div id="level-fill" class="level-fill"></div></div>
+        </div>
+
+        <div class="hud-right">
+          <div class="score-label">SCORE</div>
+          <div id="score" class="score">0</div>
+        </div>
+      </div>
+
+      <div class="stamina-wrap">
+        <div class="stamina-icon"><span>★</span></div>
+        <div class="stamina-bar">
+          <div id="stamina-fill" class="stamina-fill"></div>
+          <div class="stamina-shine"></div>
+        </div>
+        <div class="stamina-key">POWER POLE</div>
+      </div>
+
+      <div id="toast" class="toast"></div>
+    </div>
+
+    <div id="comic-layer" class="comic-layer"></div>
+
+    <div id="portrait" class="portrait">
+      <canvas id="portrait-canvas" width="300" height="300"></canvas>
+      <div class="portrait-tag">GOKU!</div>
+    </div>
+
+    <div id="damage-flash" class="damage-flash"></div>
+    <div id="white-flash" class="white-flash"></div>
+    <div class="vignette"></div>
+
+    <div id="shenron-sky" class="shenron-sky">
+      <div class="shenron-glow"></div>
+      <div class="lightning l1"></div>
+      <div class="lightning l2"></div>
+    </div>
+
+    <!-- ============ START SCREEN ============ -->
+    <section id="start-screen" class="screen start-screen">
+      <div class="start-bg-glow"></div>
+      <div class="start-inner">
+        <div class="eyebrow"><span class="dot"></span> A FAN-MADE BROWSER GAME</div>
+
+        <div class="start-title-row">
+          <div class="hero-ball" aria-hidden="true">
+            <span class="hero-star s1">★</span>
+            <span class="hero-star s2">★</span>
+            <span class="hero-star s3">★</span>
+            <span class="hero-star s4">★</span>
+            <span class="hero-star s5">★</span>
+            <span class="hero-star s6">★</span>
+            <span class="hero-star s7">★</span>
+          </div>
+          <h1 class="game-title">
+            <span class="title-top">DRAGON BALL</span>
+            <em class="title-bottom">CANYON RUN</em>
+          </h1>
+        </div>
+
+        <p class="tagline">
+          Young Goku is on a quest. Race down the canyon, dodge every trap,
+          and gather all <b>7 Dragon Balls</b> before he runs out of hearts.
+        </p>
+
+        <div class="start-actions">
+          <button id="start-btn" class="big-btn">
+            <span class="btn-gloss"></span>
+            <span class="btn-text">PLAY NOW</span>
+            <span class="btn-arrow">▶</span>
+          </button>
+          <div class="best-score">BEST <b id="best-score">0</b></div>
+        </div>
+
+        <div class="controls-card keyboard-hints">
+          <div class="control-item"><span class="keys"><kbd>A</kbd><kbd>D</kbd></span><span class="control-text">Move</span></div>
+          <div class="control-item"><span class="keys"><kbd>SPACE</kbd></span><span class="control-text">Jump · tap again for the Power Pole</span></div>
+          <div class="control-item"><span class="keys"><kbd>P</kbd></span><span class="control-text">Pause</span></div>
+        </div>
+        <div class="controls-card touch-hints">
+          <div class="control-item"><span class="keys"><kbd>◀</kbd><kbd>▶</kbd></span><span class="control-text">Move</span></div>
+          <div class="control-item"><span class="keys"><kbd>JUMP</kbd></span><span class="control-text">Tap twice for the Power Pole</span></div>
+        </div>
+
+        <div class="start-footer">Low-poly canyon · 7 Dragon Balls · One shot at a wish</div>
+      </div>
+    </section>
+
+    <!-- ============ PAUSE SCREEN ============ -->
+    <section id="pause-screen" class="screen pause-screen hidden">
+      <div class="panel">
+        <div class="panel-kicker">TAKE A BREATH</div>
+        <h2 class="panel-title">PAUSED</h2>
+        <p class="panel-copy">The canyon can wait. Goku is stretching his tail.</p>
+        <div class="panel-actions">
+          <button id="resume-btn" class="big-btn small"><span class="btn-text">RESUME</span><span class="btn-arrow">▶</span></button>
+          <button id="restart-btn" class="ghost-btn">RESTART RUN</button>
+        </div>
+        <div class="panel-row">
+          <button id="sound-btn" class="ghost-btn tiny">SOUND: ON</button>
+          <span class="panel-hint key-hint"><kbd>P</kbd> resume · <kbd>M</kbd> mute</span>
+          <span class="panel-hint touch-only">Tap RESUME to continue</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GAME OVER ============ -->
+    <section id="over-screen" class="screen over-screen hidden">
+      <div class="panel danger">
+        <div class="panel-kicker">THE CANYON WINS THIS ROUND</div>
+        <h2 class="panel-title">GOKU IS DOWN!</h2>
+        <p class="panel-copy">Those rolling logs hit harder than they look. The Dragon Balls are still out there.</p>
+        <div class="result-stats">
+          <div><span>SCORE</span><b id="over-score">0</b></div>
+          <div><span>DRAGON BALLS</span><b id="over-balls">0/7</b></div>
+        </div>
+        <div class="panel-actions">
+          <button id="retry-btn" class="big-btn small"><span class="btn-text">TRY AGAIN</span><span class="btn-arrow">↻</span></button>
+        </div>
+        <div class="panel-hint center key-hint"><kbd>SPACE</kbd> to jump back in</div>
+        <div class="panel-hint center touch-only">Tap TRY AGAIN or JUMP to restart</div>
+      </div>
+    </section>
+
+    <!-- ============ VICTORY ============ -->
+    <section id="win-screen" class="screen win-screen hidden">
+      <div class="win-rays"></div>
+      <div class="panel victory">
+        <div class="panel-kicker">ALL SEVEN DRAGON BALLS GATHERED</div>
+        <h2 class="panel-title">SHENRON<br><span>AWAKENS!</span></h2>
+        <div class="win-balls" id="win-balls"></div>
+        <p class="panel-copy">The sky splits open and the Eternal Dragon rises. Goku gets his wish — and one heck of a score.</p>
+        <div class="result-stats">
+          <div><span>FINAL SCORE</span><b id="win-score">0</b></div>
+          <div><span>BEST SCORE</span><b id="win-best">0</b></div>
+        </div>
+        <div class="panel-actions">
+          <button id="again-btn" class="big-btn small"><span class="btn-text">RUN AGAIN</span><span class="btn-arrow">↻</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TOUCH CONTROLS ============ -->
+    <div id="touch-controls" class="touch-controls">
+      <div class="touch-side touch-left">
+        <button class="touch-btn steer" data-touch="left" aria-label="Move left">◀</button>
+        <button class="touch-btn steer" data-touch="right" aria-label="Move right">▶</button>
+      </div>
+      <div class="touch-side touch-right">
+        <button id="touch-jump" class="touch-btn jump" aria-label="Jump or Power Pole vault">
+          <span class="jump-main">JUMP</span>
+          <span class="jump-sub">POWER POLE</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="loading" class="loading">
+      <div class="loading-ball"><span>★</span></div>
+      <div class="loading-text">SUMMONING THE CANYON…</div>
+    </div>
+
+    <div id="fatal" class="fatal hidden">
+      <h2>WebGL is taking a nap.</h2>
+      <p id="fatal-message">This game needs a browser with WebGL enabled.</p>
+    </div>
+
+    <div id="fade" class="fade"></div>
+  </div>
+
+  <script src="vendor/three.min.js"></script>
+  <script src="js/path.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/character.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/entities.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
