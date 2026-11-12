@@ -8,6 +8,7 @@ A fan-made, low-poly browser runner inspired by young Goku's canyon dash. Sprint
 
 The game is a static site with no build step and no external assets.
 
+- **Play online:** <https://2025bcs140.github.io/dragon-ball-canyon-run/>
 - Open `index.html` directly in a modern browser, **or**
 - Run `start.bat` on Windows (uses Node.js or Python if available), **or**
 - Serve the folder with any static server, for example:
